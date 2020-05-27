@@ -18,7 +18,7 @@ function getAllItems(dbCollection, request, response) {
   });
 }
 
-function getOneItem(dbCollection, request, response, itemId) {
+function getOneItemUsingId(dbCollection, request, response, itemId) {
   dbCollection.findOne({ _id: new ObjectID(itemId) }, (error, result) => {
     if (error) throw error;
     response.json(result);
@@ -47,7 +47,7 @@ db.initialize(
     });
 
     server.get('/users/:id', (request, response) => {
-      getOneItem(dbCollection, request, response, request.params.id);
+      getOneItemUsingId(dbCollection, request, response, request.params.id);
     });
   },
   function(err) {
@@ -71,7 +71,7 @@ db.initialize(
     });
 
     server.get('/groups/:id', (request, response) => {
-      getOneItem(dbCollection, request, response, request.params.id);
+      getOneItemUsingId(dbCollection, request, response, request.params.id);
     });
   },
   function(err) {
@@ -94,7 +94,7 @@ db.initialize(
     });
 
     server.get('/events/:id', (request, response) => {
-      getOneItem(dbCollection, request, response, request.params.id);
+      getOneItemUsingId(dbCollection, request, response, request.params.id);
     });
   },
   function(err) {
