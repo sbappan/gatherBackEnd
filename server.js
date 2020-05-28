@@ -11,15 +11,40 @@ const dbName = process.env.DB_NAME;
 server.use(cors());
 server.use(bodyParser.json());
 
-function getAllItems(dbCollection, request, response) {
+function getAllItems(dbCollection, response) {
   dbCollection.find().toArray((error, result) => {
     if (error) throw error;
     response.json(result);
   });
 }
 
-function getOneItemUsingId(dbCollection, request, response, itemId) {
+function getOneItemUsingId(dbCollection, response, itemId) {
   dbCollection.findOne({ _id: new ObjectID(itemId) }, (error, result) => {
+    if (error) throw error;
+    response.json(result);
+  });
+}
+
+function createOneItem(dbCollection, response, item) {
+  dbCollection.insertOne(item, (error, result) => {
+    if (error) throw error;
+    response.json(result);
+  });
+}
+
+function updateOneItem(dbCollection, response, item, itemId) {
+  dbCollection.updateOne(
+    { _id: new ObjectID(itemId) },
+    { $set: item },
+    (error, result) => {
+      if (error) throw error;
+      response.json(result);
+    }
+  );
+}
+
+function deleteOneItem(dbCollection, response, itemId) {
+  dbCollection.deleteOne({ _id: new ObjectID(itemId) }, (error, result) => {
     if (error) throw error;
     response.json(result);
   });
@@ -43,11 +68,23 @@ db.initialize(
     });
 
     server.get('/users', (request, response) => {
-      getAllItems(dbCollection, request, response);
+      getAllItems(dbCollection, response);
     });
 
     server.get('/users/:id', (request, response) => {
-      getOneItemUsingId(dbCollection, request, response, request.params.id);
+      getOneItemUsingId(dbCollection, response, request.params.id);
+    });
+
+    server.post('/users', (request, response) => {
+      createOneItem(dbCollection, response, request.body);
+    });
+
+    server.put('/users/:id', (request, response) => {
+      updateOneItem(dbCollection, response, request.body, request.params.id);
+    });
+
+    server.delete('/users/:id', (request, response) => {
+      deleteOneItem(dbCollection, response, request.params.id);
     });
   },
   function(err) {
@@ -67,11 +104,23 @@ db.initialize(
     });
 
     server.get('/groups', (request, response) => {
-      getAllItems(dbCollection, request, response);
+      getAllItems(dbCollection, response);
     });
 
     server.get('/groups/:id', (request, response) => {
-      getOneItemUsingId(dbCollection, request, response, request.params.id);
+      getOneItemUsingId(dbCollection, response, request.params.id);
+    });
+
+    server.post('/groups', (request, response) => {
+      createOneItem(dbCollection, response, request.body);
+    });
+
+    server.put('/groups/:id', (request, response) => {
+      updateOneItem(dbCollection, response, request.body, request.params.id);
+    });
+
+    server.delete('/groups/:id', (request, response) => {
+      deleteOneItem(dbCollection, response, request.params.id);
     });
   },
   function(err) {
@@ -90,11 +139,23 @@ db.initialize(
     });
 
     server.get('/events', (request, response) => {
-      getAllItems(dbCollection, request, response);
+      getAllItems(dbCollection, response);
     });
 
     server.get('/events/:id', (request, response) => {
       getOneItemUsingId(dbCollection, request, response, request.params.id);
+    });
+
+    server.post('/events', (request, response) => {
+      createOneItem(dbCollection, response, request.body);
+    });
+
+    server.put('/events/:id', (request, response) => {
+      updateOneItem(dbCollection, response, request.body, request.params.id);
+    });
+
+    server.delete('/events/:id', (request, response) => {
+      deleteOneItem(dbCollection, response, request.params.id);
     });
   },
   function(err) {
