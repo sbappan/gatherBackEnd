@@ -163,6 +163,29 @@ db.initialize(
   }
 );
 
+db.initialize(
+  dbName,
+  'interests',
+  function(dbCollection) {
+    // get all events
+    dbCollection.find().toArray(function(err, result) {
+      if (err) throw err;
+      //   console.log(result);
+    });
+
+    server.get('/interests', (request, response) => {
+      getAllItems(dbCollection, response);
+    });
+
+    server.post('/interests', (request, response) => {
+      createOneItem(dbCollection, response, request.body);
+    });
+  },
+  function(err) {
+    throw err;
+  }
+);
+
 server.listen(port, () => {
   console.log(`Server listening at ${port}`);
 });
