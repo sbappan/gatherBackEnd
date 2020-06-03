@@ -143,7 +143,7 @@ db.initialize(
     });
 
     server.get('/events/:id', (request, response) => {
-      getOneItemUsingId(dbCollection, request, response, request.params.id);
+      getOneItemUsingId(dbCollection, response, request.params.id);
     });
 
     server.post('/events', (request, response) => {
