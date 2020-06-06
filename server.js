@@ -50,6 +50,13 @@ function deleteOneItem(dbCollection, response, itemId) {
   });
 }
 
+function filterUsingOneId(dbCollection, response, conditionKey, itemId) {
+  dbCollection.find({ [conditionKey]: itemId }).toArray((error, result) => {
+    if (error) throw error;
+    response.json(result);
+  });
+}
+
 server.get('/', (request, response) => {
   response.end('<h1>Hello World. Welcome to the Gather API.</h1>');
 });
@@ -122,6 +129,8 @@ db.initialize(
     server.delete('/groups/:id', (request, response) => {
       deleteOneItem(dbCollection, response, request.params.id);
     });
+
+    server.get('/group/members', (request, response) => {});
   },
   function(err) {
     throw err;
@@ -156,6 +165,10 @@ db.initialize(
 
     server.delete('/events/:id', (request, response) => {
       deleteOneItem(dbCollection, response, request.params.id);
+    });
+
+    server.get('/events/group/:id', (request, response) => {
+      filterUsingOneId(dbCollection, response, 'group', request.params.id);
     });
   },
   function(err) {
