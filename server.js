@@ -38,7 +38,7 @@ function updateOneItem(dbCollection, response, item, itemId) {
     { $set: item },
     (error, result) => {
       if (error) throw error;
-      response.json(result);
+      getAllItems(dbCollection, response);
     }
   );
 }
