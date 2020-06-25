@@ -1,6 +1,6 @@
 Deployed on Heroku at https://gather-app-ca.herokuapp.com
 
-The 3 currently available endpoints are:
+The currently available endpoints are:
 
 [/users](https://gather-app-ca.herokuapp.com/users)
 
