@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { ObjectID } = require('mongodb');
+const compression = require('compression');
 const db = require('./db');
 
 const server = express();
@@ -9,6 +10,7 @@ const port = process.env.PORT || 5000;
 const dbName = process.env.DB_NAME;
 
 server.use(cors());
+server.use(compression());
 server.use(bodyParser.json());
 
 function getAllItems(dbCollection, response) {
