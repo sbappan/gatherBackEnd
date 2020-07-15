@@ -40,4 +40,4 @@ app.use('/api/groups', groups);
 app.use('/api/events', events);
 app.use('/api/interests', interests);
 
-app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+app.listen(port, () => console.log(`Server up and running on port ${port}!`));
