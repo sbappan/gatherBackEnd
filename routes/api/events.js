@@ -18,10 +18,18 @@ router.get('/:id', (req, res) => {
   Event.findById(itemId).then(event => {
     // Check if event exists
     if (!event) {
-      return res.status(404).json({ eventnotfound: 'Event not found' });
+      return res.status(404).json({ errorMsg: 'Event not found' });
     }
 
-    res.json({ event });
+    res.json(event);
+  });
+});
+
+router.get('/group/:id', (req, res) => {
+  const itemId = req.params.id;
+
+  Event.find({ group: itemId }).then(events => {
+    res.json(events);
   });
 });
 
@@ -35,10 +43,10 @@ router.put('/:id', (req, res) => {
   }).then(event => {
     // Check if Event exists
     if (!event) {
-      return res.status(404).json({ eventnotfound: 'Event not found' });
+      return res.status(404).json({ errorMsg: 'Event not found' });
     }
 
-    res.json({ event });
+    res.json(event);
   });
 });
 
@@ -47,10 +55,10 @@ router.delete('/:id', (req, res) => {
     if (err) return err;
   }).then(event => {
     if (!event) {
-      return res.status(404).json({ eventnotfound: 'Event not found' });
+      return res.status(404).json({ errorMsg: 'Event not found' });
     }
 
-    res.json({ event });
+    res.json(event);
   });
 });
 

@@ -23,6 +23,10 @@ const GroupSchema = new Schema(
       {
         message: String,
         user: String,
+        date: {
+          type: Date,
+          default: Date.now,
+        },
         status: {
           isFlagged: {
             type: Boolean,

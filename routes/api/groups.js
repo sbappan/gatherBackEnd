@@ -18,10 +18,10 @@ router.get('/:id', (req, res) => {
   Group.findById(itemId).then(group => {
     // Check if group exists
     if (!group) {
-      return res.status(404).json({ groupnotfound: 'Group not found' });
+      return res.status(404).json({ errorMsg: 'Group not found' });
     }
 
-    res.json({ group });
+    res.json(group);
   });
 });
 
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
   newGroup
     .save()
     .then(group => res.json(group))
-    .catch(err => console.log(err));
+    .catch(err => res.json(err));
 });
 
 // @route GET api/groups/:id
@@ -54,10 +54,10 @@ router.put('/:id', (req, res) => {
   }).then(group => {
     // Check if Group exists
     if (!group) {
-      return res.status(404).json({ groupnotfound: 'Group not found' });
+      return res.status(404).json({ errorMsg: 'Group not found' });
     }
 
-    res.json({ group });
+    res.json(group);
   });
 });
 
@@ -66,10 +66,10 @@ router.delete('/:id', (req, res) => {
     if (err) return err;
   }).then(group => {
     if (!group) {
-      return res.status(404).json({ groupnotfound: 'Group not found' });
+      return res.status(404).json({ errorMsg: 'Group not found' });
     }
 
-    res.json({ group });
+    res.json(group);
   });
 });
 

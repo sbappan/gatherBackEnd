@@ -18,10 +18,10 @@ router.get('/:id', (req, res) => {
   Interest.findById(itemId).then(interest => {
     // Check if interest exists
     if (!interest) {
-      return res.status(404).json({ interestnotfound: 'Interest not found' });
+      return res.status(404).json({ errorMsg: 'Interest not found' });
     }
 
-    res.json({ interest });
+    res.json(interest);
   });
 });
 
@@ -54,10 +54,10 @@ router.put('/:id', (req, res) => {
   }).then(interest => {
     // Check if Interest exists
     if (!interest) {
-      return res.status(404).json({ interestnotfound: 'Interest not found' });
+      return res.status(404).json({ errorMsg: 'Interest not found' });
     }
 
-    res.json({ interest });
+    res.json(interest);
   });
 });
 
@@ -66,10 +66,10 @@ router.delete('/:id', (req, res) => {
     if (err) return err;
   }).then(interest => {
     if (!interest) {
-      return res.status(404).json({ interestnotfound: 'Interest not found' });
+      return res.status(404).json({ errorMsg: 'Interest not found' });
     }
 
-    res.json({ interest });
+    res.json(interest);
   });
 });
 

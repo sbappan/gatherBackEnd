@@ -114,10 +114,10 @@ router.get('/:id', (req, res) => {
   User.findById(itemId).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ usernotfound: 'User not found' });
+      return res.status(404).json({ errorMsg: 'User not found' });
     }
 
-    res.json({ user });
+    res.json(user);
   });
 });
 
@@ -131,10 +131,10 @@ router.put('/:id', (req, res) => {
   }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ usernotfound: 'User not found' });
+      return res.status(404).json({ errorMsg: 'User not found' });
     }
 
-    res.json({ user });
+    res.json(user);
   });
 });
 
@@ -143,10 +143,10 @@ router.delete('/:id', (req, res) => {
     if (err) return err;
   }).then(user => {
     if (!user) {
-      return res.status(404).json({ usernotfound: 'User not found' });
+      return res.status(404).json({ errorMsg: 'User not found' });
     }
 
-    res.json({ user });
+    res.json(user);
   });
 });
 
