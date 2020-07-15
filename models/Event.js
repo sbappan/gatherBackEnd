@@ -53,6 +53,18 @@ const EventSchema = new Schema(
       type: Date,
       required: true,
     },
+    reviews: [
+      {
+        review: {
+          type: String,
+          required: 'Review text is required',
+        },
+        rating: {
+          type: Number,
+          required: 'Rating is required',
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
