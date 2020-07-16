@@ -25,6 +25,27 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// @route POST api/events/
+// @desc Create group
+// @access Public
+router.post('/', (req, res) => {
+  const newEvent = new Event({
+    name: req.body.name,
+    description: req.body.description,
+    group: req.body.group,
+    attendees: req.body.attendees,
+    location: req.body.location,
+    status: req.body.status,
+    date: req.body.date,
+    reviews: req.body.reviews,
+  });
+
+  newEvent
+    .save()
+    .then(group => res.json(group))
+    .catch(err => res.json(err));
+});
+
 router.get('/group/:id', (req, res) => {
   const itemId = req.params.id;
 
