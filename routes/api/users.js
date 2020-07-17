@@ -23,7 +23,7 @@ router.post('/register', (req, res) => {
   }
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      return res.status(400).json({ email: 'Email already exists' });
+      return res.status(400).json({ message: 'Email already exists' });
     }
     const newUser = new User({
       userName: req.body.userName,
@@ -66,7 +66,7 @@ router.post('/login', (req, res) => {
   User.findOne({ email }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: 'Email not found' });
+      return res.status(404).json({ message: 'Email not found' });
     }
     // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -87,14 +87,13 @@ router.post('/login', (req, res) => {
           (err, token) => {
             res.json({
               success: true,
-              token: `Bearer ${token}`,
+              message: 'Login successful',
+              token,
             });
           }
         );
       } else {
-        return res
-          .status(400)
-          .json({ passwordincorrect: 'Password incorrect' });
+        return res.status(400).json({ message: 'Password incorrect' });
       }
     });
   });
@@ -114,7 +113,7 @@ router.get('/:id', (req, res) => {
   User.findById(itemId).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ errorMsg: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     res.json(user);
@@ -131,7 +130,7 @@ router.put('/:id', (req, res) => {
   }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ errorMsg: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     res.json(user);
@@ -143,7 +142,7 @@ router.delete('/:id', (req, res) => {
     if (err) return err;
   }).then(user => {
     if (!user) {
-      return res.status(404).json({ errorMsg: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     res.json(user);

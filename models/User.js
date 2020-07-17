@@ -23,6 +23,7 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     dob: {
       type: Date,
@@ -55,6 +56,10 @@ const UserSchema = new Schema(
         type: Boolean,
         default: false,
       },
+    },
+    role: {
+      type: String,
+      default: 'user',
     },
   },
   { timestamps: true }
