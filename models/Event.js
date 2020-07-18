@@ -48,6 +48,10 @@ const EventSchema = new Schema(
         type: String,
         default: '',
       },
+      updatedBy: {
+        type: String,
+        required: true,
+      },
     },
     date: {
       type: Date,

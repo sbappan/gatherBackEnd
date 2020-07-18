@@ -36,6 +36,10 @@ const GroupSchema = new Schema(
             type: String,
             default: '',
           },
+          updatedBy: {
+            type: String,
+            required: true,
+          },
         },
       },
     ],
@@ -47,6 +51,10 @@ const GroupSchema = new Schema(
       reason: {
         type: String,
         default: '',
+      },
+      updatedBy: {
+        type: String,
+        required: true,
       },
     },
   },

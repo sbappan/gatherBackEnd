@@ -38,6 +38,10 @@ const UserSchema = new Schema(
         type: String,
         default: '',
       },
+      updatedBy: {
+        type: String,
+        required: true,
+      },
     },
     emailUpdates: {
       messageUpdates: {
