@@ -67,6 +67,10 @@ const EventSchema = new Schema(
           type: Number,
           required: 'Rating is required',
         },
+        user: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },
