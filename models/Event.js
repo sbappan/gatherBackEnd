@@ -59,7 +59,7 @@ const EventSchema = new Schema(
     },
     reviews: [
       {
-        review: {
+        reviewText: {
           type: String,
           default: '',
         },
@@ -67,9 +67,13 @@ const EventSchema = new Schema(
           type: Number,
           required: 'Rating is required',
         },
-        user: {
+        createdBy: {
           type: String,
           required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
         },
       },
     ],
