@@ -61,7 +61,7 @@ const EventSchema = new Schema(
       {
         review: {
           type: String,
-          required: 'Review text is required',
+          default: '',
         },
         rating: {
           type: Number,
