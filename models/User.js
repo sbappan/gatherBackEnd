@@ -40,7 +40,7 @@ const UserSchema = new Schema(
       },
       updatedBy: {
         type: String,
-        required: true,
+        default: '',
       },
     },
     emailUpdates: {
