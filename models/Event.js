@@ -70,6 +70,7 @@ const EventSchema = new Schema(
         createdBy: {
           type: String,
           required: true,
+          unique: true,
         },
         createdAt: {
           type: Date,
