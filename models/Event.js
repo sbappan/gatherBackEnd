@@ -16,6 +16,14 @@ const EventSchema = new Schema(
       type: String,
       required: true,
     },
+    createdBy: {
+      type: String,
+      required: true,
+    },
+    updatedBy: {
+      type: String,
+      required: true,
+    },
     attendees: [String],
     location: {
       line1: {
