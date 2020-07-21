@@ -38,6 +38,8 @@ router.post('/', (req, res) => {
     status: req.body.status,
     date: req.body.date,
     reviews: req.body.reviews,
+    createdBy: req.body.createdBy,
+    updatedBy: req.body.updatedBy,
   });
 
   newEvent
