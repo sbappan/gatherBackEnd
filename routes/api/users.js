@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
     }
     const newUser = new User({
       userName: req.body.userName,
-      email: req.body.email,
+      email: req.body.email.toLowerCase(),
       password: req.body.password,
       fname: req.body.fname,
       lname: req.body.lname,
@@ -60,7 +60,7 @@ router.post('/login', (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  const { email } = req.body;
+  const email = req.body.email.toLowerCase();
   const { password } = req.body;
   // Find user by email
   User.findOne({ email })
