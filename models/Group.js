@@ -19,10 +19,10 @@ const GroupSchema = new Schema(
       },
     ],
     interests: [String],
-    comments: [
+    posts: [
       {
         message: String,
-        user: String,
+        createdBy: String,
         date: {
           type: Date,
           default: Date.now,
@@ -41,6 +41,16 @@ const GroupSchema = new Schema(
             required: true,
           },
         },
+        comments: [
+          {
+            message: String,
+            createdBy: String,
+            date: {
+              type: Date,
+              default: Date.now,
+            },
+          },
+        ],
       },
     ],
     status: {
