@@ -66,6 +66,7 @@ const UserSchema = new Schema(
       default: 'user',
     },
     following: [String],
+    photo: String,
   },
   { timestamps: true }
 );
