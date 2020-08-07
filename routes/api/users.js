@@ -48,7 +48,28 @@ router.post('/register', (req, res) => {
         newUser.password = hash;
         newUser
           .save()
-          .then(user2 => res.json(user2))
+          .then(user2 => {
+            const name = `${user2.fname} ${user2.lname}`;
+
+            client.sendEmailWithTemplate({
+              From: 'hello@gatherapp.xyz',
+              To: user2.email,
+              TemplateAlias: 'welcome',
+              TemplateModel: {
+                product_url: 'https://gatherapp.xyz/',
+                product_name: 'Gather',
+                name,
+                action_url: 'https://gatherapp.xyz/',
+                login_url: 'https://gatherapp.xyz/',
+                email: user2.email,
+                sender_name: 'Marco',
+                company_name: 'Gather Inc.',
+                company_address: '1750 Finch Ave E, North York, ON M2J 2X5',
+              },
+            });
+
+            return res.json(user2);
+          })
           .catch(err => console.log(err));
       });
     });
