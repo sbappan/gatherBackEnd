@@ -3,6 +3,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const postmark = require('postmark');
+
+const client = new postmark.ServerClient(process.env.POSTMARK_KEY);
+
 require('dotenv').config();
 
 // Load input validation
@@ -63,6 +67,7 @@ router.post('/login', (req, res) => {
   }
   const email = req.body.email.toLowerCase();
   const { password } = req.body;
+
   // Find user by email
   User.findOne({ email })
     .select('+password')
@@ -78,7 +83,7 @@ router.post('/login', (req, res) => {
           // Create JWT Payload
           const payload = {
             id: user.id,
-            name: user.name,
+            name: `${user.fname} ${user.lname}`,
           };
           // Sign token
           jwt.sign(
@@ -100,6 +105,86 @@ router.post('/login', (req, res) => {
         }
       });
     });
+});
+
+router.post('/forgot', (req, res) => {
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      // User matched
+      // Create JWT Payload
+      const name = `${user.fname} ${user.lname}`;
+
+      const payload = {
+        id: user.id,
+        name,
+      };
+      // Sign token
+      jwt.sign(
+        payload,
+        process.env.SECRET_KEY,
+        {
+          expiresIn: 3600, // 1 hour in seconds
+        },
+        (err, token) => {
+          const url = `https://${req.body.appUrl}/password/reset/${user._id}/${token}`;
+
+          client.sendEmailWithTemplate({
+            From: 'hello@gatherapp.xyz',
+            To: user.email,
+            TemplateAlias: 'password-reset',
+            TemplateModel: {
+              product_url: 'https://gatherapp.xyz/',
+              product_name: 'Gather',
+              name,
+              action_url: url,
+              company_name: 'Gather Inc.',
+              company_address: '1750 Finch Ave E, North York, ON M2J 2X5',
+            },
+          });
+        }
+      );
+
+      return res.json({
+        message: 'A reset link will be sent to your email shortly',
+      });
+    }
+
+    return res.status(404).json({ message: 'Email does not exist' });
+  });
+});
+
+router.post('/reset', (req, res) => {
+  User.findOne({ _id: req.body.id }).then(user => {
+    if (user) {
+      // User matched
+      // Create JWT Payload
+      const payload = jwt.decode(req.body.token, process.env.SECRET_KEY);
+
+      if (payload.id === req.body.id) {
+        // Hash password before saving in database
+        bcrypt.genSalt(12, (err, salt) => {
+          bcrypt.hash(req.body.password, salt, (err, hash) => {
+            if (err) throw err;
+            User.findOneAndUpdate({ _id: req.body.id }, { password: hash })
+              .then(() =>
+                res.status(202).json({
+                  message:
+                    'Password has been reset. Please log in with the new password',
+                })
+              )
+              .catch(err => res.status(500).json(err));
+          });
+        });
+      } else {
+        return res.status(404).json({
+          message:
+            'The reset link has expired. Please request a new reset link.',
+        });
+      }
+    } else {
+      return res.status(404).json({ message: 'User does not exist' });
+    }
+  });
 });
 
 router.get('/', (req, res) => {
