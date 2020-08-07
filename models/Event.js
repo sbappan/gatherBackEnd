@@ -25,6 +25,7 @@ const EventSchema = new Schema(
       required: true,
     },
     attendees: [String],
+    notGoing: [String],
     location: {
       line1: {
         type: String,
