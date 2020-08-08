@@ -67,6 +67,16 @@ const GroupSchema = new Schema(
         required: true,
       },
     },
+    chat: [
+      {
+        message: String,
+        createdBy: String,
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
