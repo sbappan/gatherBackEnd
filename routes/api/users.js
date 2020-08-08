@@ -250,6 +250,32 @@ router.post('/change', (req, res) => {
     });
 });
 
+router.post('/invite', (req, res) => {
+  console.log('req.body', req.body);
+  client
+    .sendEmailWithTemplate({
+      From: 'hello@gatherapp.xyz',
+      To: req.body.email,
+      TemplateAlias: 'user-invitation',
+      TemplateModel: {
+        product_url: 'https://gatherapp.xyz',
+        product_name: 'Gather',
+        name: req.body.name,
+        invite_sender_name: req.body.senderName,
+        action_url: 'https://gatherapp.xyz/signup',
+        help_url: 'https://gatherapp.xyz/faq',
+        company_name: 'Gather Inc.',
+        company_address: '1750 Finch Ave E, North York, ON M2J 2X5',
+      },
+    })
+    .then(() =>
+      res.status(202).json({
+        message: `Invitation email has been sent to ${req.body.email}`,
+      })
+    )
+    .catch(err2 => res.status(500).json(err2));
+});
+
 router.get('/', (req, res) => {
   User.find().then(users => {
     res.json(users);
