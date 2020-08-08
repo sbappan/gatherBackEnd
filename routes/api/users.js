@@ -208,6 +208,48 @@ router.post('/reset', (req, res) => {
   });
 });
 
+router.post('/change', (req, res) => {
+  User.findOne({ _id: req.body.id })
+    .select('+password')
+    .then(user => {
+      if (user) {
+        // User matched
+        bcrypt.compare(req.body.currentPassword, user.password, function(
+          err,
+          res2
+        ) {
+          if (res2) {
+            // Hash password before saving in database
+            bcrypt.genSalt(12, (err, salt) => {
+              bcrypt.hash(req.body.password, salt, (err, hash) => {
+                if (err) {
+                  return res.status(404).json({
+                    message: 'Something went wrong, please try again.',
+                  });
+                }
+                User.findOneAndUpdate({ _id: user._id }, { password: hash })
+                  .then(() =>
+                    res.status(202).json({
+                      message:
+                        'Password has been changed. Please log in with the new password from the next time.',
+                    })
+                  )
+                  .catch(err2 => res.status(500).json(err2));
+              });
+            });
+          } else {
+            // Passwords don't match
+            return res
+              .status(404)
+              .json({ message: 'Current password does not match' });
+          }
+        });
+      } else {
+        return res.status(404).json({ message: 'User does not exist' });
+      }
+    });
+});
+
 router.get('/', (req, res) => {
   User.find().then(users => {
     res.json(users);
