@@ -251,7 +251,6 @@ router.post('/change', (req, res) => {
 });
 
 router.post('/invite', (req, res) => {
-  console.log('req.body', req.body);
   client
     .sendEmailWithTemplate({
       From: 'hello@gatherapp.xyz',
