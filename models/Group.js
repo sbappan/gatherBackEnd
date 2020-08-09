@@ -77,6 +77,7 @@ const GroupSchema = new Schema(
         },
       },
     ],
+    updatedBy: String,
   },
   { timestamps: true }
 );
